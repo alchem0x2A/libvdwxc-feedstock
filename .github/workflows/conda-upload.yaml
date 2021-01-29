@@ -30,6 +30,7 @@ jobs:
           conda info
           conda config --add channels conda-forge
           conda install conda-build anaconda-client 
+          
       - name: verify anaconda install
         shell: bash -l {0}
         run: |   
@@ -44,7 +45,9 @@ jobs:
       - name: Upload conda image
         env:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+        shell: bash -l {0}
         run: |
+          conda install anaconda-client
           anaconda -t ${ANACONDA_API_TOKEN} upload */libvdwxc*.tar.bz2
           
     
