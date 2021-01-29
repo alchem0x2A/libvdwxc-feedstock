@@ -24,30 +24,37 @@ jobs:
           auto-activate-base: true
           activate-environment: ""
           
-      - name: Prepare conda
-        shell: bash -l {0}
-        run: |
-          conda info
-          conda config --add channels conda-forge
-          conda install conda-build anaconda-client 
+#       - name: Prepare conda
+#         shell: bash -l {0}
+#         run: |
+#           conda info
+#           conda config --add channels conda-forge
+#           conda install conda-build anaconda-client 
           
-      - name: verify anaconda install
-        shell: bash -l {0}
-        run: |   
-          conda list
-          which anaconda
+#       - name: verify anaconda install
+#         shell: bash -l {0}
+#         run: |   
+#           conda list
+#           which anaconda
           
-      - name: Build conda image
-        shell: bash -l {0}
-        run: |
-          conda build -c alchem0x2a --output-folder . recipe
+#       - name: Build conda image
+#         shell: bash -l {0}
+#         run: |
+#           conda build -c alchem0x2a --output-folder . recipe
 
-      - name: Upload conda image
-        env:
-          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
-        shell: bash -l -x {0}
-        run: |
-          anaconda -t ${ANACONDA_API_TOKEN} upload */libvdwxc*.tar.bz2
+#       - name: Upload conda image
+#         env:
+#           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+#         shell: bash -l -x {0}
+#         run: |
+#           anaconda -t ${ANACONDA_API_TOKEN} upload */libvdwxc*.tar.bz2
+- name: test 
+  env:
+    ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+  shell: bash -l -x {0}
+  run: |
+    echo ${ANACONDA_API_TOKEN}
+
           
     
           
