@@ -19,14 +19,14 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('fortran') }}  # [linux]
-    - fftw 3.3.9=mpi_openmpi_hea73808_0
+    - fftw * mpi_openmpi_*
     - openmpi
     - cmake >=3.1
     - ninja                      # [win]
     - perl
 
   run:
-    - fftw 3.3.9=mpi_openmpi_hea73808_0
+    - fftw * mpi_openmpi_*
     - openmpi
 
 test:
