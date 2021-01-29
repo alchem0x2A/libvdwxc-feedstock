@@ -1,70 +1,73 @@
-{% set name = "libxc" %}
-{% set version = "5.1.0" %}
-{% set sha256 = "36136909c919ef21c5605cbaec070a0b7b5cc5819cba26b6a40fe45b82e828ea" %}
+{% set name = "libvdwxc" %}
+{% set version = "0.4.0" %}
+{% set sha256 = "5fcd37253489931b94ce865bb4e6942250665e269057a50bd532c8697ac19dc7" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://gitlab.com/libxc/libxc/-/archive/{{ version }}/libxc-{{ version }}.tar.bz2
+  url: https://gitlab.com/libvdwxc/libvdwxc/-/archive/{{ version }}/libvdwxc-{{ version }}.tar.bz2
   sha256: {{ sha256 }}
 
 build:
   number: 0
   run_exports:
-    - {{ pin_subpackage('libxc', max_pin='x') }}
+    - {{ pin_subpackage('libvdwxc', max_pin='x') }}
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('fortran') }}  # [linux]
+    - fftw 3.3.9=mpi_openmpi_hea73808_0
+    - openmpi
     - cmake >=3.1
     - ninja                      # [win]
     - perl
 
+  # run:
+    # - fftw
+
 test:
   commands:
-    - dir "%PREFIX%\Library"                                # [win]
-    - dir "%PREFIX%"\Library\include                        # [win]
-    - ls -l $PREFIX/lib                                     # [unix]
-    - ls -l $PREFIX/share/cmake/Libxc                       # [unix]
-    # Verify library
-    - test -L $PREFIX/lib/libxc$SHLIB_EXT                   # [unix]
-    - test ! -f $PREFIX/lib/libxc.a                         # [unix]
-    - if not exist %PREFIX%\\Library\\lib\\xc.lib exit 1    # [win]
-    - if not exist %PREFIX%\\Library\\bin\\xc.dll exit 1    # [win]
-    - test -f $PREFIX/lib/libxcf90$SHLIB_EXT                # [linux]
-    - test -f $PREFIX/lib/libxcf03$SHLIB_EXT                # [linux]
-    # Verify accessories
-    - test -f $PREFIX/include/xc.h                          # [unix]
-    - if not exist %PREFIX%\\Library\\include\\xc.h exit 1  # [win]
-    - test -f $PREFIX/share/cmake/Libxc/LibxcConfig.cmake   # [unix]
-    - if not exist %PREFIX%\\Library\\share\\cmake\\Libxc\\LibxcConfig.cmake exit 1  # [win]
-    - test -f $PREFIX/lib/pkgconfig/libxc.pc                # [unix]
-    - test -f $PREFIX/lib/pkgconfig/libxcf90.pc             # [linux]
-    - test -f $PREFIX/lib/pkgconfig/libxcf03.pc             # [linux]
-    # Inspect linkage
-    - xc-info 100                                           # [unix]
-    - xc-info.exe 100                                       # [win]
-    - ldd -v $PREFIX/lib/libxc$SHLIB_EXT                    # [linux]
-    - ldd -v $PREFIX/bin/xc-info                            # [linux]
-    - otool -L $PREFIX/lib/libxc$SHLIB_EXT                  # [osx]
-    - conda inspect objects -p $PREFIX $PKG_NAME            # [osx]
-    - conda inspect linkages --show-files --groupby=dependency libxc  # [unix]
+    # - dir "%PREFIX%\Library"                                # [win]
+    # - dir "%PREFIX%"\Library\include                        # [win]
+    # - ls -l $PREFIX/lib                                     # [unix]
+    # - ls -l $PREFIX/share/cmake/Libxc                       # [unix]
+    # # Verify library
+    # - test -L $PREFIX/lib/libxc$SHLIB_EXT                   # [unix]
+    # - test ! -f $PREFIX/lib/libxc.a                         # [unix]
+    # - if not exist %PREFIX%\\Library\\lib\\xc.lib exit 1    # [win]
+    # - if not exist %PREFIX%\\Library\\bin\\xc.dll exit 1    # [win]
+    # - test -f $PREFIX/lib/libxcf90$SHLIB_EXT                # [linux]
+    # - test -f $PREFIX/lib/libxcf03$SHLIB_EXT                # [linux]
+    # # Verify accessories
+    # - test -f $PREFIX/include/xc.h                          # [unix]
+    # - if not exist %PREFIX%\\Library\\include\\xc.h exit 1  # [win]
+    # - test -f $PREFIX/share/cmake/Libxc/LibxcConfig.cmake   # [unix]
+    # - if not exist %PREFIX%\\Library\\share\\cmake\\Libxc\\LibxcConfig.cmake exit 1  # [win]
+    # - test -f $PREFIX/lib/pkgconfig/libxc.pc                # [unix]
+    # - test -f $PREFIX/lib/pkgconfig/libxcf90.pc             # [linux]
+    # - test -f $PREFIX/lib/pkgconfig/libxcf03.pc             # [linux]
+    # # Inspect linkage
+    # - xc-info 100                                           # [unix]
+    # - xc-info.exe 100                                       # [win]
+    # - ldd -v $PREFIX/lib/libxc$SHLIB_EXT                    # [linux]
+    # - ldd -v $PREFIX/bin/xc-info                            # [linux]
+    # - otool -L $PREFIX/lib/libxc$SHLIB_EXT                  # [osx]
+    # - conda inspect objects -p $PREFIX $PKG_NAME            # [osx]
+    # - conda inspect linkages --show-files --groupby=dependency libxc  # [unix]
 
 about:
-  home: http://www.tddft.org/programs/Libxc
-  dev_url: https://gitlab.com/libxc/libxc
-  doc_url: https://www.tddft.org/programs/libxc/manual/libxc-5.0.x/
-  license: MPL-2.0
-  license_url: https://opensource.org/licenses/MPL-2.0
+  home: https://gitlab.com/libvdwxc/libvdwxc
+  dev_url: https://gitlab.com/libvdwxc/libvdwxc
+  doc_url: 
+  license: GPL-3.-
+  license_url: https://www.gnu.org/licenses/gpl-3.0.html
   license_file: COPYING
-  license_family: Other
-  summary: M.A.L. Marques's exchange-correlation functionals for density-functional theory
+  license_family: GPL
+  summary: Portable C library of density functionals with van der Waals interactions for density functional theory
 
 extra:
   recipe-maintainers:
-    - bjodah
-    - jan-janssen
-    - loriab
+    - alchem0x2a
