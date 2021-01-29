@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: setup environment
-        uses: actions/checkout@2
+        uses: actions/checkout@v2
         
       - name: setup miniconda and activate base
         uses: conda-incubator/setup-miniconda@v2
