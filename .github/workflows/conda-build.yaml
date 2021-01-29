@@ -15,11 +15,18 @@ jobs:
           auto-activate-base: true
           activate-environment: ""
           
-      - name: Check conda info
+      - name: Prepare conda
         shell: bash -l {0}
         run: |
           conda info
-          ls
+          conda config --add channels conda-forge
+          conda install conda-build
+          
+      - name: Try build conda image
+        shell: bash -l {0}
+        run: |
+          conda build recipe 
+          
           
         
   
