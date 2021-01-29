@@ -30,6 +30,11 @@ jobs:
           conda info
           conda config --add channels conda-forge
           conda install conda-build anaconda-client 
+      - name: verify anaconda install
+        shell: bash -l {0}
+        run: |   
+          conda list
+          which anaconda
           
       - name: Build conda image
         shell: bash -l {0}
