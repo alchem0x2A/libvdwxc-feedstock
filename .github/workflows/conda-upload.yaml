@@ -47,8 +47,7 @@ jobs:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
         shell: bash -l -x {0}
         run: |
-          conda install anaconda-client
-          anaconda upload */libvdwxc*.tar.bz2
+          anaconda -t ${ANACONDA_API_TOKEN} upload */libvdwxc*.tar.bz2
           
     
           
